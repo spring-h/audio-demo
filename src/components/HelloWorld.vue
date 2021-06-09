@@ -3,7 +3,7 @@
  * @create: 2021-06-07 15:23 PM
  * @license: MIT
  * @lastAuthor: Spring
- * @lastEditTime: 2021-06-09 17:38 PM
+ * @lastEditTime: 2021-06-09 19:29 PM
  * @desc: 
 -->
 <template>
@@ -24,6 +24,17 @@
     <div class="time">
       <div class="nowtime">{{ nowtime | time }}/{{ alltime | time }}</div>
     </div>
+    <div class="loop">
+      <div @click="chooseloop(1)" :class="[loopstyle == 1 ? 'loopclass' : '']">
+        单曲循环
+      </div>
+      <div @click="chooseloop(2)" :class="[loopstyle == 2 ? 'loopclass' : '']">
+        列表循环
+      </div>
+      <div @click="chooseloop(3)" :class="[loopstyle == 3 ? 'loopclass' : '']">
+        随机播放
+      </div>
+    </div>
     <div class="sy">
       <div class="circle" ref="mute" @click="ismute">{{ sy }}</div>
       <div class="voice" @click="voice($event)">
@@ -31,13 +42,14 @@
       </div>
     </div>
     <audio
-      loop
+      :loop="loop"
       ref="audio"
       autoplay="autoplay"
       :onlyid="id"
       :src="src"
       id="audio"
       @timeupdate="timeupdate($event)"
+      @ended="ended($event)"
     ></audio>
   </div>
 </template>
@@ -57,8 +69,10 @@ export default {
       nowtime: 0,
       alltime: 0,
       timer: "",
+      loop: false,
       //声音缓存
       mute: 0,
+      loopstyle: 2,
       zy: [
         {
           src: "/music/光良 - 童话.mp3",
@@ -182,21 +196,53 @@ export default {
         (e.offsetX / 500) * Math.ceil(this.$refs.audio.duration)
       );
     },
+    //时间改变
     timeupdate(e) {
       if (isNaN(e.target.duration) || isNaN(e.target.currentTime)) {
-        console.log(111);
         this.alltime = 0;
         this.nowtime = 0;
       } else {
         this.alltime = e.target.duration;
         this.nowtime = e.target.currentTime;
-        
+
         try {
           let nowpx = Math.ceil((this.nowtime / this.alltime) * 500);
           this.$refs.now.style.width = nowpx + "px";
         } catch (error) {
-          console.log(error)
+          console.log(error);
         }
+      }
+    },
+    //结束
+    ended() {
+      let loop = this.loopstyle;
+      if (loop == 1) {
+        this.loop = true;
+      }
+      if (loop == 2) {
+        this.x();
+      }
+      if (loop == 3) {
+        let num=this.randomNum(0,this.zy.length-1)
+        this.$refs.audio.src = this.zy[num].src;
+        this.id = this.zy[num].id;
+      }
+    },
+    chooseloop(i) {
+      if(i==1){
+        this.loop=true
+      }
+      this.loopstyle = i;
+    },
+    //生成随机数
+    randomNum(minNum, maxNum) {
+      switch (arguments.length) {
+        case 1:
+          return parseInt(Math.random() * minNum + 1, 10);
+        case 2:
+          return parseInt(Math.random() * (maxNum - minNum + 1) + minNum, 10);
+        default:
+          return 0;
       }
     },
   },
@@ -278,5 +324,20 @@ export default {
 }
 li {
   cursor: pointer;
+}
+.loop {
+  position: absolute;
+  top: 150px;
+  left: 100px;
+  width: 500px;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  div {
+    color: #fff;
+  }
+  .loopclass {
+    color: red;
+  }
 }
 </style>
