@@ -228,6 +228,7 @@ export default {
         this.id = this.zy[num].id;
       }
     },
+    
     chooseloop(i) {
       if(i==1){
         this.loop=true
