@@ -1,9 +1,13 @@
+<!--
+ * @author: Spring
+ * @create: 2021-06-07 15:23 PM
+ * @license: MIT
+ * @lastAuthor: Spring
+ * @lastEditTime: 2021-06-07 15:39 PM
+ * @desc: 
+-->
 <template>
   <div id="app">
-    <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
-    </div>
     <router-view />
   </div>
 </template>

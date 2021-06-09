@@ -1,18 +1,27 @@
+<!--
+ * @author: Spring
+ * @create: 2021-06-07 15:23 PM
+ * @license: MIT
+ * @lastAuthor: Spring
+ * @lastEditTime: 2021-06-07 19:12 PM
+ * @desc: 
+-->
 <template>
   <div class="home">
-    <img alt="Vue logo" src="../assets/logo.png" />
-    <HelloWorld msg="Welcome to Your Vue.js App" />
+    <hellow></hellow>>
   </div>
 </template>
 
 <script>
 // @ is an alias to /src
-import HelloWorld from "@/components/HelloWorld.vue";
-
+import hellow from '@/components/HelloWorld.vue'
 export default {
   name: "Home",
   components: {
-    HelloWorld,
+    hellow
   },
 };
 </script>
+<style lang="scss" >
+  
+</style>
